@@ -1,0 +1,71 @@
+classdef app1 < matlab.apps.AppBase
+
+    % Properties that correspond to app components
+    properties (Access = public)
+        UIFigure      matlab.ui.Figure
+        BaubauButton  matlab.ui.control.Button
+        Label         matlab.ui.control.Label
+        EditField     matlab.ui.control.EditField
+    end
+
+    methods (Access = private)
+
+        % Button pushed function: BaubauButton
+        function BaubauButtonPushed(app, event)
+            app.EditField.Value="Bau bau!";
+        end
+    end
+
+    % App initialization and construction
+    methods (Access = private)
+
+        % Create UIFigure and components
+        function createComponents(app)
+
+            % Create UIFigure
+            app.UIFigure = uifigure;
+            app.UIFigure.Position = [100 100 640 480];
+            app.UIFigure.Name = 'UI Figure';
+
+            % Create BaubauButton
+            app.BaubauButton = uibutton(app.UIFigure, 'push');
+            app.BaubauButton.ButtonPushedFcn = createCallbackFcn(app, @BaubauButtonPushed, true);
+            app.BaubauButton.Position = [58 363 100 22];
+            app.BaubauButton.Text = 'Bau bau';
+
+            % Create Label
+            app.Label = uilabel(app.UIFigure);
+            app.Label.HorizontalAlignment = 'right';
+            app.Label.Position = [18 414 25 22];
+            app.Label.Text = '';
+
+            % Create EditField
+            app.EditField = uieditfield(app.UIFigure, 'text');
+            app.EditField.Position = [58 414 100 22];
+        end
+    end
+
+    methods (Access = public)
+
+        % Construct app
+        function app = app1
+
+            % Create and configure components
+            createComponents(app)
+
+            % Register the app with App Designer
+            registerApp(app, app.UIFigure)
+
+            if nargout == 0
+                clear app
+            end
+        end
+
+        % Code that executes before app deletion
+        function delete(app)
+
+            % Delete UIFigure when app is deleted
+            delete(app.UIFigure)
+        end
+    end
+end
